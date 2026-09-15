@@ -6,7 +6,7 @@
 	import PageBackground from '$lib/components/layout/PageBackground.svelte';
 	import Logo from '$lib/components/ui/Logo.svelte';
 	import Spinner from '$lib/components/ui/Spinner.svelte';
-    import GoogleIcon from '$lib/components/ui/GoogleIcon.svelte';
+	import GoogleIcon from '$lib/components/ui/GoogleIcon.svelte';
 
 	let signingIn = $state(false);
 	let error = $state<string | null>(null);
@@ -35,8 +35,10 @@
 
 <PageBackground blobs>
 	<div class="flex min-h-screen items-center justify-center px-6">
-		<div class="w-full max-w-sm rounded-2xl border border-gray-100 bg-white p-10 text-center shadow-xl shadow-violet-100">
-			<div class="mx-auto mb-5">
+		<div
+			class="w-full max-w-sm rounded-2xl border border-gray-100 bg-white p-10 text-center shadow-xl shadow-violet-100"
+		>
+			<div class="mb-5 flex justify-center">
 				<Logo size="lg" />
 			</div>
 
