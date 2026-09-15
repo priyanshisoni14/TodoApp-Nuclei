@@ -43,6 +43,8 @@
 		"vitest-browser-svelte": "^2.1.1"
 	},
 	"dependencies": {
-		"firebase": "^12.19.0"
+		"@lucide/svelte": "^1.46.0",
+		"firebase": "^12.19.0",
+		"lucide-svelte": "^1.0.1"
 	}
 }
