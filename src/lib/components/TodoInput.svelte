@@ -3,6 +3,7 @@
 	import { validateTodoText } from '$lib/validation';
 	import Button from './ui/Button.svelte';
 	import Spinner from './ui/Spinner.svelte';
+    import { TODO_MAX_LENGTH } from '$lib/validation'
 
 	let { uid }: { uid: string } = $props();
 
@@ -34,7 +35,7 @@
 <form onsubmit={handleSubmit} class="flex flex-col gap-2 sm:flex-row sm:items-center">
 	<input
 		bind:value={text}
-		maxlength={250}
+		maxlength={TODO_MAX_LENGTH}
 		name="todo-text"
 		id="todo-text"
 		placeholder="What needs doing?"
