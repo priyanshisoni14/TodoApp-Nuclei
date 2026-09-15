@@ -1,9 +1,19 @@
 <script lang="ts">
 	import './layout.css';
-	import favicon from '$lib/assets/favicon.svg';
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
+	import { page } from '$app/state';
+	import { authStore } from '$lib/stores/authStore.svelte';
 
 	let { children } = $props();
+
+	$effect(() => {
+		if (!authStore.loading && !authStore.isAuthenticated && page.url.pathname !== '/login') {
+			goto(resolve('/login'));
+		}
+	});
 </script>
 
-<svelte:head><link rel="icon" href={favicon} /></svelte:head>
-{@render children()}
+{#if !authStore.loading}
+	{@render children()}
+{/if}
