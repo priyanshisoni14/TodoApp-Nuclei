@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { ListTodo, CheckCircle2, Sparkles } from '@lucide/svelte';
-	import GlassCard from './ui/GlassCard.svelte';
 	import StatRow from './ui/StatRow.svelte';
 
 	let { done, total }: { done: number; total: number } = $props();
@@ -33,7 +32,7 @@
 		<p class="mt-1 text-sm text-gray-400">{today}</p>
 	</div>
 
-	<GlassCard>
+	<div class="rounded-2xl border border-gray-100 bg-white/60 p-6 shadow-sm backdrop-blur">
 		<div class="flex items-center gap-5">
 			<div class="relative h-24 w-24 shrink-0">
 				<svg viewBox="0 0 96 96" class="h-24 w-24 -rotate-90">
@@ -67,5 +66,5 @@
 				<Sparkles class="h-4 w-4" /> All done for today!
 			</p>
 		{/if}
-	</GlassCard>
+	</div>
 </div>

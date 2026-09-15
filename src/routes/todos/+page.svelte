@@ -7,7 +7,6 @@
 	import TodoInput from '$lib/components/TodoInput.svelte';
 	import TodoList from '$lib/components/TodoList.svelte';
 	import StatsPanel from '$lib/components/StatsPanel.svelte';
-	import GlassCard from '$lib/components/ui/GlassCard.svelte';
 	import type { Todo } from '$lib/types';
 
 	let todos = $state<Todo[]>([]);
@@ -38,12 +37,12 @@
 				<div class="grid gap-8 lg:grid-cols-[320px_1fr] lg:gap-12">
 					<StatsPanel done={doneCount} total={todos.length} />
 
-					<GlassCard class="min-w-0">
+					<div class="min-w-0 rounded-2xl border border-gray-100 bg-white/60 p-6 shadow-sm backdrop-blur">
 						<TodoInput uid={authStore.user.uid} />
 						<div class="mt-6">
 							<TodoList {todos} />
 						</div>
-					</GlassCard>
+					</div>
 				</div>
 			{/if}
 		</main>
