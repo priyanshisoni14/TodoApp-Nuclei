@@ -2,6 +2,7 @@
 	import { addTodo } from '$lib/firebase/firestore';
 	import { validateTodoText } from '$lib/validation';
 	import Button from './ui/Button.svelte';
+	import Spinner from './ui/Spinner.svelte';
 
 	let { uid }: { uid: string } = $props();
 
@@ -39,7 +40,13 @@
 		placeholder="What needs doing?"
 		class="flex-1 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm shadow-sm outline-none transition focus:border-violet-300 focus:ring-2 focus:ring-violet-100"
 	/>
-	<Button type="submit" disabled={submitting}>{submitting ? 'Adding…' : 'Add'}</Button>
+	<Button type="submit" disabled={submitting}>
+		{#if submitting}
+			<span class="flex items-center gap-2"><Spinner class="h-4 w-4" /> Adding…</span>
+		{:else}
+			Add
+		{/if}
+	</Button>
 </form>
 
 {#if error}<p class="mt-1.5 text-xs text-red-500">{error}</p>{/if}

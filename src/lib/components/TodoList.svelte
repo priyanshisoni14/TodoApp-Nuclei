@@ -4,6 +4,7 @@
 	import { setTodoCompleted, deleteTodo } from '$lib/firebase/firestore';
 	import type { Todo } from '$lib/types';
 	import TodoItem from './TodoItem.svelte';
+	import CountBadge from './ui/CountBadge.svelte';
 
 	let { todos }: { todos: Todo[] } = $props();
 
@@ -16,9 +17,7 @@
 		<div class="mb-7">
 			<h2 class="mb-2.5 flex items-center gap-2 text-xs font-semibold tracking-wide text-gray-400 uppercase">
 				{title}
-				<span class="rounded-full bg-gray-100 px-1.5 py-0.5 text-[10px] font-medium text-gray-500">
-					{items.length}
-				</span>
+				<CountBadge count={items.length} />
 			</h2>
 			<div class="flex flex-col gap-2">
 				{#each items as todo (todo.id)}

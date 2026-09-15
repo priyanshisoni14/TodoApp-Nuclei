@@ -2,14 +2,13 @@
 	import { logout } from '$lib/firebase/auth';
 	import { authStore } from '$lib/stores/authStore.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
+	import Logo from '$lib/components/ui/Logo.svelte';
 </script>
 
 <header class="border-b border-gray-100 bg-white/70 backdrop-blur">
-	<div class="mx-auto flex max-w-2xl items-center justify-between px-6 py-4">
+	<div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
 		<div class="flex items-center gap-2.5">
-			<div class="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-500 text-sm font-bold text-white">
-				✓
-			</div>
+			<Logo size="sm" />
 			<span class="text-lg font-semibold text-gray-900">TodoApp</span>
 		</div>
 

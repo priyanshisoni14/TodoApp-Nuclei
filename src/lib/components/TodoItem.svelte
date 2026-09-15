@@ -18,7 +18,7 @@
 		label={todo.completed ? 'Mark incomplete' : 'Mark complete'}
 	/>
 
-	<p class="flex-1 text-sm text-gray-800 transition {todo.completed ? 'text-gray-400 line-through' : ''}">
+	<p class="min-w-0 flex-1 text-sm text-gray-800 break-words transition {todo.completed ? 'text-gray-400 line-through' : ''}">
 		{todo.text}
 	</p>
 
