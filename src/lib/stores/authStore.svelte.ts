@@ -1,29 +1,29 @@
-import { browser } from '$app/environment';
 import { onAuthStateChanged, type User } from 'firebase/auth';
 import { auth } from '$lib/firebase/auth';
+import { logger } from '$lib/utils/logger';
 
 class AuthStore {
-    user = $state<User | null>(null);
-    loading = $state(true);
+	user = $state<User | null>(null);
+	loading = $state(true);
 
-    constructor() {
-    // If not in a browser environment, set loading to false and return early
-        if (!browser) {
-            this.loading = false;
-            return;
-        }
-  //runs everytime auth state changes whenever user logs in or logs out, 
-  // it sets the user and loading state accordingly
-        onAuthStateChanged(auth, (user) => {
-            console.log('Auth state changed:', user);
-            this.user = user;
-            this.loading = false;
-        });
-    }
+	private unsubscribe: (() => void) | null = null;
 
-    get isAuthenticated() {
-        return this.user !== null;
-    }
+	init() {
+		if (this.unsubscribe) return;
+
+		logger.debug('Initializing AuthStore', 'AuthStore');
+
+		this.unsubscribe = onAuthStateChanged(auth, (user) => {
+			logger.debug(`Auth state changed: ${user}`, 'AuthStore');
+
+			this.user = user;
+			this.loading = false;
+		});
+	}
+
+	get isAuthenticated() {
+		return this.user !== null;
+	}
 }
 
 export const authStore = new AuthStore();

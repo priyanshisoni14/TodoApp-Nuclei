@@ -8,6 +8,7 @@ import type { Todo } from '../types';
 export const db = getFirestore(firebaseApp);
 const TODOS_COLLECTION = 'todos';
 
+// Subscribe to real-time updates of todos for a specific user
 export function subscribeTodos(
 	uid: string,
 	onChange: (todos: Todo[]) => void,
@@ -28,7 +29,9 @@ export function subscribeTodos(
 					id: d.id,
 					uid: data.uid,
 					text: data.text,
+					important: Boolean(data.important),
 					completed: Boolean(data.completed),
+					category: data.category || '',
 					createdAt: data.createdAt instanceof Timestamp ? data.createdAt.toMillis() : Date.now()
 				};
 			});
