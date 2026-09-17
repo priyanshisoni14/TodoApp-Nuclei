@@ -1,9 +1,21 @@
+export const CATEGORIES = ['work', 'study', 'health', 'personal', 'chores', 'leisure'] as const;
+export type Category = (typeof CATEGORIES)[number];
+
+export const CATEGORY_COLOR: Record<Category, string> = {
+	work: 'bg-violet-500',
+	study: 'bg-emerald-500',
+	health: 'bg-pink-500',
+	personal: 'bg-amber-500',
+	chores: 'bg-red-500',
+	leisure: 'bg-sky-500'
+};
+
 export interface Todo {
-    id: string;
-    uid: string;
-    text: string;
-    important: boolean;
-    completed: boolean;
-    category: string;
-    createdAt: number;
+	id: string;
+	uid: string;
+	text: string;
+	completed: boolean;
+	category: Category;
+	dueDate: number | null; // epoch ms
+	createdAt: number;
 }

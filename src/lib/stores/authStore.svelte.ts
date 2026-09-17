@@ -11,7 +11,8 @@ class AuthStore {
 	init() {
 		if (this.unsubscribe) return;
 
-		logger.debug('Initializing AuthStore', 'AuthStore');
+		logger.debug(`Initializing AuthStore`, 'AuthStore');
+	
 
 		this.unsubscribe = onAuthStateChanged(auth, (user) => {
 			logger.debug(`Auth state changed: ${user}`, 'AuthStore');

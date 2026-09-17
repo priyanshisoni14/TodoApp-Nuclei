@@ -3,54 +3,42 @@ import {
 	orderBy, query, serverTimestamp, Timestamp, updateDoc, where
 } from 'firebase/firestore';
 import { firebaseApp } from './config';
-import type { Todo } from '../types';
+import type { Category, Todo } from '../types';
 
 export const db = getFirestore(firebaseApp);
-const TODOS_COLLECTION = 'todos';
+const COL = 'todos';
 
-// Subscribe to real-time updates of todos for a specific user
-export function subscribeTodos(
-	uid: string,
-	onChange: (todos: Todo[]) => void,
-	onError?: (err: Error) => void
-) {
-	const q = query(
-		collection(db, TODOS_COLLECTION),
-		where('uid', '==', uid),
-		orderBy('createdAt', 'desc')
-	);
+export function subscribeTodos(uid: string, onChange: (todos: Todo[]) => void) {
+	const q = query(collection(db, COL), where('uid', '==', uid), orderBy('createdAt', 'desc'));
 
-	return onSnapshot(
-		q,
-		(snapshot) => {
-			const todos: Todo[] = snapshot.docs.map((d) => {
-				const data = d.data();
+	return onSnapshot(q, (snap) => {
+		onChange(
+			snap.docs.map((d) => {
+				const x = d.data();
 				return {
 					id: d.id,
-					uid: data.uid,
-					text: data.text,
-					important: Boolean(data.important),
-					completed: Boolean(data.completed),
-					category: data.category || '',
-					createdAt: data.createdAt instanceof Timestamp ? data.createdAt.toMillis() : Date.now()
+					uid: x.uid,
+					text: x.text,
+					completed: Boolean(x.completed),
+					category: (x.category ?? 'personal') as Category,
+					dueDate: typeof x.dueDate === 'number' ? x.dueDate : null,
+					createdAt: x.createdAt instanceof Timestamp ? x.createdAt.toMillis() : Date.now()
 				};
-			});
-			onChange(todos);
-		},
-		(err) => onError?.(err)
-	);
-}
-
-export async function addTodo(uid: string, text: string): Promise<void> {
-	await addDoc(collection(db, TODOS_COLLECTION), {
-		uid, text, completed: false, createdAt: serverTimestamp()
+			})
+		);
 	});
 }
 
-export async function setTodoCompleted(id: string, completed: boolean): Promise<void> {
-	await updateDoc(doc(db, TODOS_COLLECTION, id), { completed });
+export function addTodo(uid: string, text: string, category: Category, dueDate: number | null) {
+	return addDoc(collection(db, COL), {
+		uid, text, category, dueDate, completed: false, createdAt: serverTimestamp()
+	});
 }
 
-export async function deleteTodo(id: string): Promise<void> {
-	await deleteDoc(doc(db, TODOS_COLLECTION, id));
+export function setTodoCompleted(id: string, completed: boolean) {
+	return updateDoc(doc(db, COL, id), { completed });
+}
+
+export function deleteTodo(id: string) {
+	return deleteDoc(doc(db, COL, id));
 }

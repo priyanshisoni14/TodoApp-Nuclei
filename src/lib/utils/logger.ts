@@ -1,3 +1,5 @@
+import { onDestroy, onMount } from 'svelte';
+
 type LogLevel = 'DEBUG' | 'INFO' | 'WARN' | 'ERROR';
 
 const LEVEL_ORDER: Record<LogLevel, number> = {
@@ -7,39 +9,44 @@ const LEVEL_ORDER: Record<LogLevel, number> = {
 	ERROR: 3
 };
 
-// Show all logs in development, only warnings/errors in production.
-// This is determined by the `import.meta.env.DEV` variable,
-// which is true in development and false in production.
+// Show everything in development, only warnings/errors in production.
 const MIN_LEVEL: LogLevel = import.meta.env.DEV ? 'DEBUG' : 'WARN';
+
+// Colors per level so logs are scannable in the console.
+const LEVEL_STYLE: Record<LogLevel, string> = {
+	DEBUG: 'color:#94a3b8',
+	INFO: 'color:#38bdf8',
+	WARN: 'color:#fbbf24',
+	ERROR: 'color:#f87171'
+};
 
 class Logger {
 	private log(level: LogLevel, message: string, source?: string, error?: unknown) {
-		// If the log level is below the minimum level, do not log anything
-		// This ensures that in production, only warnings and errors are logged,
-		// while in development, all logs are shown.
-		if (LEVEL_ORDER[level] < LEVEL_ORDER[MIN_LEVEL]) {
-			return;
-		}
+		// Drop anything below the configured minimum level.
+		if (LEVEL_ORDER[level] < LEVEL_ORDER[MIN_LEVEL]) return;
 
-		const time = new Date().toISOString();
-
-		const prefix = `[${time}] [${level}]${source ? ` [${source}]` : ''}`;
+		// Time only (not full ISO) — the date is noise in a console.
+		const time = new Date().toLocaleTimeString();
+		const prefix = `%c[${time}] [${level}]${source ? ` [${source}]` : ''}`;
+		const style = LEVEL_STYLE[level];
 
 		switch (level) {
 			case 'DEBUG':
-				console.debug(prefix, message);
+				// console.log, NOT console.debug — console.debug is "Verbose" in
+				// Chrome DevTools and is hidden by the default level filter.
+				console.log(prefix, style, message);
 				break;
 
 			case 'INFO':
-				console.info(prefix, message);
+				console.info(prefix, style, message);
 				break;
 
 			case 'WARN':
-				console.warn(prefix, message);
+				console.warn(prefix, style, message);
 				break;
 
 			case 'ERROR':
-				console.error(prefix, message, error);
+				console.error(prefix, style, message, error ?? '');
 				break;
 		}
 	}
@@ -62,3 +69,13 @@ class Logger {
 }
 
 export const logger = new Logger();
+
+/**
+ * Logs mount/destroy for a component. Call it once at the top of a
+ * component's <script> block: logLifecycle('TodoItem').
+ * Must be called during component initialisation, not inside a handler.
+ */
+export function logLifecycle(source: string) {
+	onMount(() => logger.debug('mounted', source));
+	onDestroy(() => logger.debug('destroyed', source));
+}
