@@ -3,6 +3,8 @@ import { auth } from '$lib/firebase/auth';
 import { logger } from '$lib/utils/logger';
 
 class AuthStore {
+	private constructor(){}
+	static readonly instance = new AuthStore();
 	// storing my user
 	user = $state<User | null>(null);
 	loading = $state(true);
@@ -28,4 +30,4 @@ class AuthStore {
 	}
 }
 
-export const authStore = new AuthStore();
+export const authStore = AuthStore.instance;

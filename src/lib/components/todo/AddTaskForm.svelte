@@ -11,11 +11,12 @@
 
 	let text = $state('');
 	let category = $state<Category>('personal');
-	let due = $state(''); // yyyy-mm-dd from the native date input
+	let due = $state('');
 	let error = $state('');
 
+	const today = new Date().toISOString().split('T')[0];
+
 	function submit() {
-		// Convert the date string to epoch ms at local midnight, or null.
 		const dueDate = due ? new Date(`${due}T00:00:00`).getTime() : null;
 		const result = todoStore.add(uid, text, category, dueDate);
 
@@ -38,26 +39,38 @@
 			bind:value={text}
 			onkeydown={(e) => e.key === 'Enter' && submit()}
 			placeholder="Add a new task..."
-			class="w-full rounded-xl border border-white/10 bg-slate-900/70 px-4 py-3 text-sm text-white placeholder-slate-500 backdrop-blur-sm outline-none"
+			aria-label="Task (required)"
+			class="w-full rounded-xl border border-white/10 bg-slate-900/70 px-4 py-3 text-sm text-white placeholder-slate-500 backdrop-blur-sm outline-none focus:border-white/30"
 		/>
-		<Button text="+" width="3rem" onclick={submit} />
+		<Button text="+" width="3rem" onclick={submit} ariaLabel="Add task" />
 	</div>
 
 	<div class="flex gap-2">
-		<select
-			bind:value={category}
-			class="flex-1 rounded-lg border border-white/10 bg-slate-900/70 px-3 py-2 text-sm text-slate-300 capitalize backdrop-blur-sm"
-		>
-			{#each CATEGORIES as c (c)}
-				<option value={c} class="bg-slate-900">{c}</option>
-			{/each}
-		</select>
+		
+		<div class="relative flex-1">
+			<span class="absolute -top-1.5 left-2 bg-slate-950 px-1 text-xs text-red-400">category *</span>
+			<select
+				bind:value={category}
+				aria-label="Category (required)"
+				class="w-full rounded-lg border border-yellow-400/40 bg-slate-900/70 px-3 py-2 text-sm text-slate-300 capitalize backdrop-blur-sm"
+			>
+				{#each CATEGORIES as c (c)}
+					<option value={c} class="bg-slate-900">{c}</option>
+				{/each}
+			</select>
+		</div>
 
-		<input
-			type="date"
-			bind:value={due}
-			class="flex-1 rounded-lg border border-white/10 bg-slate-900/70 px-3 py-2 text-sm text-slate-300 backdrop-blur-sm"
-		/>
+		<div class="relative flex-1">
+			<span class="absolute -top-1.5 left-2 bg-slate-950 px-1 text-xs text-slate-500">due date</span>
+			<input
+				type="date"
+				bind:value={due}
+				min={today}
+				aria-label="Due date (optional)"
+				class="w-full rounded-lg border border-white/10 bg-slate-900/70 px-3 py-2 text-sm text-slate-300 backdrop-blur-sm
+					{due ? 'border-amber-400/40' : 'border-white/10'}"
+			/>
+		</div>
 	</div>
 
 	{#if error}

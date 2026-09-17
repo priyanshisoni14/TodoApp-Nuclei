@@ -30,7 +30,7 @@
 
 	<FilterGroup
 		label="Date"
-		options={['all', 'today', 'upcoming']}
+		options={['all', 'today', 'upcoming','overdue']}
 		selected={todoStore.date}
 		onselect={(v) => (todoStore.date = v as 'all' | 'today' | 'upcoming')}
 		source="DateFilter"

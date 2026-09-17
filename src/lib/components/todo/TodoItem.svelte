@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { CATEGORY_COLOR, type Todo } from '$lib/types';
-	import { formatDueDate } from '$lib/utils/date';
+	import { isOverdue, formatDueDate } from '$lib/utils/date';
 	import { todoStore } from '$lib/stores/todoStore.svelte';
 	import { logger } from '$lib/utils/logger';
 	import Button from '$lib/components/ui/Button.svelte';
@@ -29,7 +29,9 @@
 	}
 </script>
 
-<div class="group flex items-center gap-4 rounded-2xl border border-white/10 bg-slate-900/70 px-5 py-4 backdrop-blur-sm">
+<div
+	class="group flex items-center gap-4 rounded-2xl border border-white/10 bg-slate-900/70 px-5 py-4 backdrop-blur-sm"
+>
 	<input
 		type="checkbox"
 		checked={todo.completed}
@@ -38,16 +40,22 @@
 	/>
 
 	<div class="min-w-0 flex-1">
-		<p class="truncate text-sm font-medium {todo.completed ? 'text-slate-500 line-through' : 'text-white'}">
+		<p
+			class="truncate text-sm font-medium {todo.completed
+				? 'text-slate-500 line-through'
+				: 'text-white'}"
+		>
 			{todo.text}
 		</p>
 
-		{#if formatDueDate(todo.dueDate)}
-			<Badge
-				text={formatDueDate(todo.dueDate)}
-				pill={false}
-				class="mt-0.5 block text-slate-500"
-			/>
+		{#if todo.dueDate}
+			<span
+				class="mt-0.5 text-xs font-medium {!todo.completed && isOverdue(todo.dueDate)
+					? 'text-red-400'
+					: 'text-slate-500'}"
+			>
+				{formatDueDate(todo.dueDate)}
+			</span>
 		{/if}
 	</div>
 
