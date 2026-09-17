@@ -3,7 +3,7 @@
 	import { logger } from '$lib/utils/logger';
 	import Button from '../ui/Button.svelte';
 
-	let name = $props();
+	let { name }: { name: string } = $props();
 
 	const SOURCE = 'AppHeader';
 
