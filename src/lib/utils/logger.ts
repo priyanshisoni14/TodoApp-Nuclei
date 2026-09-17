@@ -12,29 +12,40 @@ const LEVEL_ORDER: Record<LogLevel, number> = {
 // Show everything in development, only warnings/errors in production.
 const MIN_LEVEL: LogLevel = import.meta.env.DEV ? 'DEBUG' : 'WARN';
 
+const LEVEL_STYLE: Record<LogLevel, string> = {
+	DEBUG: 'color:#94a3b8',
+	INFO: 'color:#38bdf8',
+	WARN: 'color:#fbbf24',
+	ERROR: 'color:#f87171'
+};
+
 class Logger {
 	private log(level: LogLevel, message: string, source?: string, error?: unknown) {
 		// Drop anything below the configured minimum level.
 		if (LEVEL_ORDER[level] < LEVEL_ORDER[MIN_LEVEL]) return;
 
+		// Time only (not full ISO) — the date is noise in a console.
 		const time = new Date().toLocaleTimeString();
 		const prefix = `%c[${time}] [${level}]${source ? ` [${source}]` : ''}`;
+		const style = LEVEL_STYLE[level];
 
 		switch (level) {
 			case 'DEBUG':
-				console.log(prefix, message);
+				// console.log, NOT console.debug — console.debug is "Verbose" in
+				// Chrome DevTools and is hidden by the default level filter.
+				console.log(prefix, style, message);
 				break;
 
 			case 'INFO':
-				console.info(prefix, message);
+				console.info(prefix, style, message);
 				break;
 
 			case 'WARN':
-				console.warn(prefix, message);
+				console.warn(prefix, style, message);
 				break;
 
 			case 'ERROR':
-				console.error(prefix, message, error ?? '');
+				console.error(prefix, style, message, error ?? '');
 				break;
 		}
 	}
@@ -63,6 +74,7 @@ export const logger = new Logger();
  * component's <script> block: logLifecycle('TodoItem').
  * Must be called during component initialisation, not inside a handler.
  */
+
 export function logLifecycle(source: string) {
 	onMount(() => logger.debug('mounted', source));
 	onDestroy(() => logger.debug('destroyed', source));
