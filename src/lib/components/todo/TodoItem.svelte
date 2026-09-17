@@ -29,7 +29,7 @@
 	}
 </script>
 
-<div class="group flex items-center gap-4 rounded-2xl bg-white/4 px-5 py-4">
+<div class="group flex items-center gap-4 rounded-2xl border border-white/10 bg-slate-900/70 px-5 py-4 backdrop-blur-sm">
 	<input
 		type="checkbox"
 		checked={todo.completed}
@@ -41,8 +41,13 @@
 		<p class="truncate text-sm font-medium {todo.completed ? 'text-slate-500 line-through' : 'text-white'}">
 			{todo.text}
 		</p>
+
 		{#if formatDueDate(todo.dueDate)}
-			<Badge text={formatDueDate(todo.dueDate)} pill={false} class="mt-0.5 block text-slate-500" />
+			<Badge
+				text={formatDueDate(todo.dueDate)}
+				pill={false}
+				class="mt-0.5 block text-slate-500"
+			/>
 		{/if}
 	</div>
 

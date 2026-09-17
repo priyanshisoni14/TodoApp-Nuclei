@@ -9,7 +9,6 @@
 	const SOURCE = 'AddTaskForm';
 	logLifecycle(SOURCE);
 
-
 	let text = $state('');
 	let category = $state<Category>('personal');
 	let due = $state(''); // yyyy-mm-dd from the native date input
@@ -39,7 +38,7 @@
 			bind:value={text}
 			onkeydown={(e) => e.key === 'Enter' && submit()}
 			placeholder="Add a new task..."
-			class="w-full rounded-xl border border-white/10 bg-white/3 px-4 py-3 text-sm text-white placeholder-slate-500 outline-none"
+			class="w-full rounded-xl border border-white/10 bg-slate-900/70 px-4 py-3 text-sm text-white placeholder-slate-500 backdrop-blur-sm outline-none"
 		/>
 		<Button text="+" width="3rem" onclick={submit} />
 	</div>
@@ -47,9 +46,9 @@
 	<div class="flex gap-2">
 		<select
 			bind:value={category}
-			class="flex-1 rounded-lg border border-white/10 bg-transparent px-3 py-2 text-sm text-slate-300 capitalize"
+			class="flex-1 rounded-lg border border-white/10 bg-slate-900/70 px-3 py-2 text-sm text-slate-300 capitalize backdrop-blur-sm"
 		>
-			{#each CATEGORIES as c(c)}
+			{#each CATEGORIES as c (c)}
 				<option value={c} class="bg-slate-900">{c}</option>
 			{/each}
 		</select>
@@ -57,7 +56,7 @@
 		<input
 			type="date"
 			bind:value={due}
-			class="flex-1 rounded-lg border border-white/10 bg-transparent px-3 py-2 text-sm text-slate-300"
+			class="flex-1 rounded-lg border border-white/10 bg-slate-900/70 px-3 py-2 text-sm text-slate-300 backdrop-blur-sm"
 		/>
 	</div>
 

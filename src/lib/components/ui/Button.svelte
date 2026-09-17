@@ -21,10 +21,12 @@
 
 	function buttonClass() {
 		if (plain) return `text-sm transition ${extraClass}`;
+
 		const state = active
-			? 'border-white/40 bg-white/10 text-white'
-			: 'border-white/10 text-slate-300 hover:bg-white/5';
-		return `rounded-lg border px-3 py-2 text-sm capitalize transition ${state} ${extraClass}`;
+			? 'border-white/40 bg-slate-900/80 text-white'
+			: 'border-white/10 bg-slate-900/60 text-slate-300 hover:bg-slate-900/80';
+
+		return `rounded-lg border px-3 py-2 text-sm capitalize transition backdrop-blur-sm ${state} ${extraClass}`;
 	}
 </script>
 
