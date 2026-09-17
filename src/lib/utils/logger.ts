@@ -12,11 +12,12 @@ const LEVEL_ORDER: Record<LogLevel, number> = {
 // Show everything in development, only warnings/errors in production.
 const MIN_LEVEL: LogLevel = import.meta.env.DEV ? 'DEBUG' : 'WARN';
 
+// Colors per level so logs are scannable in the console.
 const LEVEL_STYLE: Record<LogLevel, string> = {
-	DEBUG: 'color:#94a3b8',
-	INFO: 'color:#38bdf8',
-	WARN: 'color:#fbbf24',
-	ERROR: 'color:#f87171'
+	DEBUG: 'color:#e2e8f0',
+	INFO: 'color:#22d3ee',
+	WARN: 'color:#fde047',
+	ERROR: 'color:#ff4d6d'
 };
 
 class Logger {
@@ -74,7 +75,6 @@ export const logger = new Logger();
  * component's <script> block: logLifecycle('TodoItem').
  * Must be called during component initialisation, not inside a handler.
  */
-
 export function logLifecycle(source: string) {
 	onMount(() => logger.debug('mounted', source));
 	onDestroy(() => logger.debug('destroyed', source));
