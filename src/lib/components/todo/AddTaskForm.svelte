@@ -38,7 +38,7 @@
 		<input
 			bind:value={text}
 			onkeydown={(e) => e.key === 'Enter' && submit()}
-			placeholder="Add a new task..."
+			placeholder="Add a new task... *"
 			aria-label="Task (required)"
 			class="w-full rounded-xl border border-white/10 bg-slate-900/70 px-4 py-3 text-sm text-white placeholder-slate-500 backdrop-blur-sm outline-none focus:border-white/30"
 		/>
@@ -46,9 +46,8 @@
 	</div>
 
 	<div class="flex gap-2">
-		
+		<!-- Category options -->
 		<div class="relative flex-1">
-			<span class="absolute -top-1.5 left-2 bg-slate-950 px-1 text-xs text-red-400">category *</span>
 			<select
 				bind:value={category}
 				aria-label="Category (required)"
@@ -59,9 +58,8 @@
 				{/each}
 			</select>
 		</div>
-
+		<!-- Due Date  -->
 		<div class="relative flex-1">
-			<span class="absolute -top-1.5 left-2 bg-slate-950 px-1 text-xs text-slate-500">due date</span>
 			<input
 				type="date"
 				bind:value={due}
