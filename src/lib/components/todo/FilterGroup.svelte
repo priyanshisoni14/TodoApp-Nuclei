@@ -13,7 +13,7 @@
 		options: readonly string[];
 		selected: string;
 		onselect: (value: string) => void;
-		source: string; // just for the log tag, e.g. 'CategoryFilter'
+		source: string; 
 	} = $props();
 
 	function pick(value: string) {

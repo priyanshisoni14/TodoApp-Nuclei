@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { logout } from '$lib/firebase/auth';
 	import { logger } from '$lib/utils/logger';
+	import Button from '../ui/Button.svelte';
 
-	let { name }: { name: string } = $props();
+	let name = $props();
 
 	const SOURCE = 'AppHeader';
 
@@ -19,7 +20,7 @@
 <header class="mb-10 space-y-8">
 	<div class="flex items-center justify-between">
 		<span class="text-xl font-bold text-white">TaskCrew</span>
-		<button onclick={signOut} class="text-sm text-slate-400 hover:text-white">Sign out</button>
+		<Button text="Sign out" onclick={signOut} plain class="text-slate-400 hover:text-white" />
 	</div>
 
 	<div>

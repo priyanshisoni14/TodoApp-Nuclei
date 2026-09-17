@@ -6,15 +6,15 @@
 	import Sidebar from '$lib/components/todo/Sidebar.svelte';
 	import TodoSection from '$lib/components/todo/TodoSection.svelte';
 
+   // debugging purpose
 	const SOURCE = 'TodosPage';
 	logLifecycle(SOURCE);
 
 	const name = $derived(authStore.user?.displayName?.split(' ')[0] ?? 'Crewmate');
+	const uid = $derived(authStore.user?.uid ?? null);
 
 	$effect(() => {
-		const uid = authStore.user?.uid;
 		logger.debug(`Auth effect ran, uid=${uid ?? 'none'}`, SOURCE);
-
 		if (uid) todoStore.init(uid);
 		return () => todoStore.destroy();
 	});
@@ -33,8 +33,8 @@
 			{/if}
 		</main>
 
-		{#if authStore.user}
-			<Sidebar uid={authStore.user.uid} />
+		{#if uid}
+			<Sidebar {uid} />
 		{/if}
 	</div>
 </div>

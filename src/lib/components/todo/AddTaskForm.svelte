@@ -2,12 +2,13 @@
 	import { todoStore } from '$lib/stores/todoStore.svelte';
 	import { CATEGORIES, type Category } from '$lib/types';
 	import { logger, logLifecycle } from '$lib/utils/logger';
-    import Button from '$lib/components/ui/Button.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
 
 	let { uid }: { uid: string } = $props();
 
 	const SOURCE = 'AddTaskForm';
 	logLifecycle(SOURCE);
+
 
 	let text = $state('');
 	let category = $state<Category>('personal');
@@ -17,18 +18,15 @@
 	function submit() {
 		// Convert the date string to epoch ms at local midnight, or null.
 		const dueDate = due ? new Date(`${due}T00:00:00`).getTime() : null;
-		logger.debug(`Submitting: "${text}" / ${category} / ${due || 'no date'}`, SOURCE);
-
 		const result = todoStore.add(uid, text, category, dueDate);
 
 		if (!result.valid) {
-			// Validation failed — nothing was written to Firestore.
-			logger.warn(`Validation failed: ${result.error}`, SOURCE);
+			logger.warn(`Todo rejected: ${result.error}`, SOURCE);
 			error = result.error ?? 'Invalid task.';
 			return;
 		}
 
-		logger.info('Task accepted, write dispatched', SOURCE);
+		logger.info(`Todo added: "${result.value}"`, SOURCE);
 		error = '';
 		text = '';
 		due = '';
@@ -41,7 +39,7 @@
 			bind:value={text}
 			onkeydown={(e) => e.key === 'Enter' && submit()}
 			placeholder="Add a new task..."
-			class="w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder-slate-500 outline-none"
+			class="w-full rounded-xl border border-white/10 bg-white/3 px-4 py-3 text-sm text-white placeholder-slate-500 outline-none"
 		/>
 		<Button text="+" width="3rem" onclick={submit} />
 	</div>

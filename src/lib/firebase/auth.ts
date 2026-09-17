@@ -9,7 +9,7 @@ import { firebaseApp } from './config';
 
 // Initialize Firebase Authentication and get a reference to the service
 export const auth = getAuth(firebaseApp);
-
+// Create an instance of the Google provider object
 const googleProvider = new GoogleAuthProvider();
 
 export async function loginWithGoogle() {

@@ -22,13 +22,11 @@
 	{#each characters as character (character.id)}
 		<div
 			class="absolute floating-character"
-			style="
-				left: {character.left};
-				top: {character.top};
-				width: {character.size};
-				animation-duration: {character.duration};
-				animation-delay: {character.delay};
-			"
+			style:left={character.left}
+			style:top={character.top}
+			style:width={character.size}
+			style:animation-duration={character.duration}
+			style:animation-delay={character.delay}
 		>
 			<character.component />
 		</div>

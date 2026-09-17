@@ -10,11 +10,15 @@
 	import Stars from '$lib/components/ui/Stars.svelte';
 
 	let { children } = $props();
+	// Initialize the authStore on component mount
+	// This ensures that the authentication state is checked and set up when the layout is loaded 
+	// runs once when the layout is first rendered, and it will not run again on subsequent renders 
+	// unless the component is unmounted and remounted.
 	onMount(() => {
 		logger.debug('Initializing authStore', 'Layout');
 		authStore.init();
 	});
-
+// Watch for changes in the authStore and redirect accordingly
 	$effect(() => {
 		if (authStore.loading) return;
 
@@ -30,7 +34,6 @@
 		}
 	});
 </script>
-
 
 {#if !authStore.loading}
 	{#if authStore.isAuthenticated || page.url.pathname === '/login'}

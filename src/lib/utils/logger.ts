@@ -12,41 +12,29 @@ const LEVEL_ORDER: Record<LogLevel, number> = {
 // Show everything in development, only warnings/errors in production.
 const MIN_LEVEL: LogLevel = import.meta.env.DEV ? 'DEBUG' : 'WARN';
 
-// Colors per level so logs are scannable in the console.
-const LEVEL_STYLE: Record<LogLevel, string> = {
-	DEBUG: 'color:#94a3b8',
-	INFO: 'color:#38bdf8',
-	WARN: 'color:#fbbf24',
-	ERROR: 'color:#f87171'
-};
-
 class Logger {
 	private log(level: LogLevel, message: string, source?: string, error?: unknown) {
 		// Drop anything below the configured minimum level.
 		if (LEVEL_ORDER[level] < LEVEL_ORDER[MIN_LEVEL]) return;
 
-		// Time only (not full ISO) — the date is noise in a console.
 		const time = new Date().toLocaleTimeString();
 		const prefix = `%c[${time}] [${level}]${source ? ` [${source}]` : ''}`;
-		const style = LEVEL_STYLE[level];
 
 		switch (level) {
 			case 'DEBUG':
-				// console.log, NOT console.debug — console.debug is "Verbose" in
-				// Chrome DevTools and is hidden by the default level filter.
-				console.log(prefix, style, message);
+				console.log(prefix, message);
 				break;
 
 			case 'INFO':
-				console.info(prefix, style, message);
+				console.info(prefix, message);
 				break;
 
 			case 'WARN':
-				console.warn(prefix, style, message);
+				console.warn(prefix, message);
 				break;
 
 			case 'ERROR':
-				console.error(prefix, style, message, error ?? '');
+				console.error(prefix, message, error ?? '');
 				break;
 		}
 	}

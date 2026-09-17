@@ -9,10 +9,9 @@
 	let { todo }: { todo: Todo } = $props();
 
 	const SOURCE = 'TodoItem';
-	const dueLabel = $derived(formatDueDate(todo.dueDate));
 
 	async function onToggle() {
-		logger.debug(`Toggling "${todo.text}" -> ${!todo.completed}`, SOURCE);
+		logger.debug(`Toggling todo ${todo.id}`, SOURCE);
 		try {
 			await todoStore.toggle(todo);
 		} catch (err) {
@@ -30,7 +29,7 @@
 	}
 </script>
 
-<div class="group flex items-center gap-4 rounded-2xl bg-white/[0.04] px-5 py-4">
+<div class="group flex items-center gap-4 rounded-2xl bg-white/4 px-5 py-4">
 	<input
 		type="checkbox"
 		checked={todo.completed}
@@ -42,8 +41,8 @@
 		<p class="truncate text-sm font-medium {todo.completed ? 'text-slate-500 line-through' : 'text-white'}">
 			{todo.text}
 		</p>
-		{#if dueLabel}
-			<Badge text={dueLabel} pill={false} class="mt-0.5 block text-slate-500" />
+		{#if formatDueDate(todo.dueDate)}
+			<Badge text={formatDueDate(todo.dueDate)} pill={false} class="mt-0.5 block text-slate-500" />
 		{/if}
 	</div>
 

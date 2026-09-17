@@ -18,7 +18,6 @@ const firebaseConfig = {
 	appId: PUBLIC_FIREBASE_APP_ID
 };
 
-// Guard against re-initializing during HMR / repeated module evaluation.
 // If an app is already initialized, getApp() will return the existing instance.
 // If no app is initialized, initializeApp() will create a new instance.
 export const firebaseApp = getApps().length ? getApp() : initializeApp(firebaseConfig);

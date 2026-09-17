@@ -2,6 +2,9 @@
 	import GoogleSignInButton from '$lib/components/ui/GoogleSignInButton.svelte';
 	import { loginWithGoogle } from '$lib/firebase/auth';
 	import Blue from '$lib/components/ui/characters/Blue.svelte';
+	import { logger } from '$lib/utils/logger';
+
+	const SOURCE = 'LoginCard';
 
 	let signingIn = $state(false);
 	let error = $state<string | null>(null);
@@ -9,10 +12,13 @@
 	async function handleSignIn() {
 		error = null;
 		signingIn = true;
+		logger.debug('Google sign-in requested', SOURCE);
+
 		try {
 			await loginWithGoogle();
+			logger.info('Google sign-in succeeded', SOURCE);
 		} catch (err) {
-			console.error('Google sign-in failed:', err);
+			logger.error('Google sign-in failed', SOURCE, err);
 			error = 'Sign-in failed. Please try again.';
 		} finally {
 			signingIn = false;
@@ -21,7 +27,7 @@
 </script>
 
 <div
-	class="flex w-full max-w-[400px] flex-col items-center rounded-[20px] border border-white/10 bg-white/[0.03] px-8 py-10 text-center backdrop-blur-md"
+	class="flex w-full max-w-100 flex-col items-center rounded-[20px] border border-white/10 bg-white/3 px-8 py-10 text-center backdrop-blur-md"
 >
 	<div class="mb-2 flex items-center gap-2">
 		<div class="h-8 w-8" aria-hidden="true">

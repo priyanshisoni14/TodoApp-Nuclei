@@ -17,7 +17,7 @@
 	}
 </script>
 
-<aside class="w-full space-y-6 rounded-3xl border border-white/5 bg-white/[0.02] p-6 lg:max-w-sm">
+<aside class="w-full space-y-6 rounded-3xl border border-white/5 bg-white/2 p-6 lg:max-w-sm">
 	<AddTaskForm {uid} />
 
 	<FilterGroup

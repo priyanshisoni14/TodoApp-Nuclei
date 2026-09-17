@@ -8,9 +8,11 @@ import type { Category, Todo } from '../types';
 export const db = getFirestore(firebaseApp);
 const COL = 'todos';
 
+// Subscribe to todos for a specific user and call onChange whenever the data changes
 export function subscribeTodos(uid: string, onChange: (todos: Todo[]) => void) {
+	// Create a query to get todos for the specific user
 	const q = query(collection(db, COL), where('uid', '==', uid), orderBy('createdAt', 'desc'));
-
+// Listen for real-time updates to the query and call onChange with the updated todos   
 	return onSnapshot(q, (snap) => {
 		onChange(
 			snap.docs.map((d) => {
